@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Catch Out!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link href="components/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet" media="screen">
+  <style type="text/css">
+    /* Sticky footer styles
+      -------------------------------------------------- */
+    
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      /* The html and body elements cannot have any padding or margin. */
+    }
+    /* Wrapper for page content to push down footer */
+    
+    #wrap {
+      /*        min-height: 100%;
+*/
+      height: auto !important;
+      height: 100%;
+      /* Negative indent footer by it's height */
+      /*margin: 0 auto -70px;*/
+      top: 250px;
+      position: fixed;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      bottom: 70px;
+      /*Set bottom value to HeightOfBottomFrameDiv*/
+      overflow: auto;
+      /*width: 800px;*/
+    }
+    /* #p{
+         overflow-y: auto;
+        position:fixed;
+      }*/
+    
+    #table {
+      margin-top: 5px;
+    }
+    /* Set the fixed height of the footer here */
+    
+    #footer {
+      height: 70px;
+      bottom: 0;
+      position: absolute;
+      overflow: hidden;
+      top: auto;
+    }
+    
+    #page-header {
+      height: 200px;
+      top: 0;
+      position: fixed;
+      overflow: auto;
+      bottom: auto;
+      background-color: white;
+      margin-left: 15px;
+    }
+    
+    #footer {
+      background-color: #f5f5f5;
+      color: red;
+    }
+    
+    #footer #log:before {
+      font-size: 36px;
+      font-weight: bold;
+      content: "Logging";
+      float: left;
+      margin-left: -230px;
+      /*        margin-bottom: 0px;
+*/
+    }
+    
+    .hand {
+      margin: 0 0 10px 0;
+    }
+    
+    .h {
+      display: inline;
+    }
+    
+    .e1 {
+      list-style-type: none;
+    }
+    
+    ul {
+      list-style-type: none;
+    }
+    
+    .center {
+      display: block;
+      margin: auto;
+      text-align: center;
+    }
+    
+    .wrapper {
+      width: auto;
+      overflow-y: scroll;
+      position: relative;
+      height: 300px;
+    }
+    
+    .wrap {
+      height: 100%;
+      overflow: auto;
+    }
+  </style>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="components/jquery/jquery.js"></script>
+  <script src="components/bootstrap/docs/assets/js/bootstrap.js"></script>
+  <script src="client.js"></script>
+</head>
+
+<body>
+
+  <div id=StartArea>
+
+    <img src="resources/header.jpg" class="center">
+    <h2 class="center">Catch Out!</h2><br>
+    <button type="button" class="btn btn-primary btn-lg btn-block" id="StartGame">Start Game</button> <br>
+    <button type="button" class="btn btn-warning btn-lg btn-block" id="HowToPlay">How To Play</button> <br>
+
+  </div>
+
+  <div id=HowToArea class="wrap">
+    <div>
+      <img src="resources/header.jpg" class="center">
+      <h2 class="center">Catch Out!</h2><br><br>
+    </div>
+    <p>Catch out  में  आपका स्वागत है <br> यह एक आध्यात्मिक खेल है , जिसे खेलने से आपका जीवन बदल जाएगा ।
+      <br><br> इसमें आपको अपनी समस्याओं को अलग ढंग से कैच करना है ।
+      <br> 1) अपना नाम टाइप करके table join करें
+      <br> 2) ताश के पत्तों का गेम है यह।  Table join करते ही आपको ५ पत्ते मिलेंगे और एक प्रॉब्लम ऊपर आएगी.. जिसके लिए आपको
+      आगे बढ़ना है।
+      <br> 3) ५ पत्तों में एक एक समस्या  लिखी होंगी! उन्हें आप पढ़ ले। आराम से।
+      <br> 4) आपको दी गई समस्या से अपने आपको लिंक करें।
+      <br> 5) आपकी बारी है तो पहले एक पत्ता draw करें यानी उठाएँ  आप पत्ता table से या deck से उठा सकते हैं
+      <br> 6) पत्ता उठाने के बाद किसी एक पत्ते को फेंकना है जो आपके प्रॉब्लम से जुड़े  नहीं हैं  यह करते ही आपकी बारी ख़त्म
+      हो जाएगी
+      <br> 7) जब आपकी बारी नहीं हो आप जो पत्ते निश्चित हो गए  हैं उनके explanation लिख सकते हैं.. पत्तों पे डबल क्लिक कर
+      के। save कर ले।
+      <br> 8) ५ राउंड होने के बाद finish बटन दीखने लगेगा जो सिर्फ़ सारे explanation लिखने के बाद ही दबेगा
+      <br> 9) एक बार सब खिलाड़ी finish प्रेस कर दें तब उन्हें बाक़ी खिलाड़ियों के पत्ते और explanations दिखेंगे
+      <br> इसके बल पर उन्हें स्कोर  देना होगा
+      <br> 10) जिस खिलाड़ी को सबसे ज़्यादा स्कोर मिलता है वह विजेता  होगा।
+      <br> ध्यान रखने की बात - समस्या से जुड़े समाधान को आध्यात्मिक तरीक़े से, गुरुमहाराजजी की शिक्षा को ध्यानमें रख , सोच
+      विचार कर के चयन करना है।
+      <br><br> आपका दिन शुभ हो 🌺
+    </p>
+
+    <button type="button" class="btn btn-danger" id="BackToMenu">Go back</button>
+
+
+  </div>
+
+  <div id="GameArea">
+    <!-- Part 1: Wrap all page content here -->
+    <div class="page-header" id="page-header">
+      <ul id="head" style="list-style-type:none">
+        <li class="h"><img src="resources/header.jpg"></li>
+        <li class="h">
+          <h3>Catch Out!</h3>
+        </li>
+      </ul>
+      <div class="span9">
+        <p id="welcometext">Hello and welcome to Catch Out! Please have a <a href="cards.html" target="_blank">look at all the cards</a> before
+          playing.</p>
+        <p id="problem"></p>
+
+      </div>
+    </div>
+    <div id="wrap">
+      <div class="container">
+
+        <div id="p">
+
+          <div class="row" style="margin: 15px">
+
+
+            <div id="counter"></div>
+          </div>
+          <div class="alert" id="tableFull">
+            <strong>Table is full.</strong> Please check back later.
+          </div>
+          <div id="loginForm">
+            <form class="form-inline">
+              <input type="text" class="input" id="name" placeholder="Your name">
+              <button type="submit" class="btn btn-success" id="join">Join table</button>
+              <label id="error"></label>
+            </form>
+          </div>
+          <div id="waiting">
+            <p>Waiting for other players to join</p>
+          </div>
+          <div style="margin: 15px">
+            <ul class="inline" id="topstuff">
+              <li>
+                <p id="progressUpdate"></p>
+              </li>
+              <li></li>
+              <li>
+                <p id="currentRoundNo"></p>
+              </li>
+              <li>
+                <p id="pack"></p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div id="playArea">
+          <p id="playOption"></p>
+          <button id="drawCard" class="btn btn-success">Draw from deck</button>
+          <button id="drawDiscarded" class="btn btn-warning">Draw last discarded</button>
+          <button id="stage2Button" class="btn btn-danger">Finish</button>
+          <p>Discard pile:</p>
+          <p id="table"></p>
+          <p>Cards in your hand:</p>
+          <p id="hand"></p>
+        </div>
+        <div id="explainmaster">
+          <div id="explaindiv0">
+            <ul style="list-style-type:none">
+              <li>
+                <textarea id="explainText0">
+          </textarea>
+              </li>
+              <li>
+                <button id="submitExplain0" class="btn btn-success">Save</button>
+              </li>
+            </ul>
+          </div>
+
+          <div id="explaindiv1">
+            <ul style="list-style-type:none">
+              <li>
+                <textarea id="explainText1">
+          </textarea>
+              </li>
+              <li>
+                <button id="submitExplain1" class="btn btn-success">Save</button>
+              </li>
+            </ul>
+          </div>
+
+          <div id="explaindiv2">
+            <ul style="list-style-type:none">
+              <li>
+                <textarea id="explainText2">
+          </textarea>
+              </li>
+              <li>
+                <button id="submitExplain2" class="btn btn-success">Save</button>
+              </li>
+            </ul>
+          </div>
+
+          <div id="explaindiv3">
+            <ul style="list-style-type:none">
+              <li>
+                <textarea id="explainText3">
+          </textarea>
+              </li>
+              <li>
+                <button id="submitExplain3" class="btn btn-success">Save</button>
+              </li>
+            </ul>
+          </div>
+
+          <div id="explaindiv4">
+            <ul style="list-style-type:none">
+              <li>
+                <textarea id="explainText4">
+          </textarea>
+              </li>
+              <li>
+                <button id="submitExplain4" class="btn btn-success">Save</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <p id="wait2"></p>
+        </p>
+
+        <div id="stage2">
+          <p id="wait1">Waiting for all players...</p>
+
+          <p id="playerData"></p>
+          <p id="buttons"></p>
+          <p id="judgement">
+            <form id="judgeform">
+              Card 1 Marks:
+              <label class="radio-inline"><input type="radio" name="c1" value="0" checked="checked">0</label>
+              <label class="radio-inline"><input type="radio" name="c1" value="1">1</label>
+              <label class="radio-inline"><input type="radio" name="c1" value="2">2</label>
+              <label class="radio-inline"><input type="radio" name="c1" value="3">3</label>
+              <label class="radio-inline"><input type="radio" name="c1" value="4">4</label>
+              <label class="radio-inline"><input type="radio" name="c1" value="5">5</label>
+              <br> Card 2 Marks:
+              <label class="radio-inline"><input type="radio" name="c2" value="0" checked="checked">0</label>
+              <label class="radio-inline"><input type="radio" name="c2" value="1">1</label>
+              <label class="radio-inline"><input type="radio" name="c2" value="2">2</label>
+              <label class="radio-inline"><input type="radio" name="c2" value="3">3</label>
+              <label class="radio-inline"><input type="radio" name="c2" value="4">4</label>
+              <label class="radio-inline"><input type="radio" name="c2" value="5">5</label>
+              <br> Card 3 Marks:
+              <label class="radio-inline"><input type="radio" name="c3" value="0" checked="checked">0</label>
+              <label class="radio-inline"><input type="radio" name="c3" value="1">1</label>
+              <label class="radio-inline"><input type="radio" name="c3" value="2">2</label>
+              <label class="radio-inline"><input type="radio" name="c3" value="3">3</label>
+              <label class="radio-inline"><input type="radio" name="c3" value="4">4</label>
+              <label class="radio-inline"><input type="radio" name="c3" value="5">5</label>
+              <br> Card 4 Marks:
+              <label class="radio-inline"><input type="radio" name="c4" value="0" checked="checked">0</label>
+              <label class="radio-inline"><input type="radio" name="c4" value="1">1</label>
+              <label class="radio-inline"><input type="radio" name="c4" value="2">2</label>
+              <label class="radio-inline"><input type="radio" name="c4" value="3">3</label>
+              <label class="radio-inline"><input type="radio" name="c4" value="4">4</label>
+              <label class="radio-inline"><input type="radio" name="c4" value="5">5</label>
+              <br> Card 5 Marks:
+              <label class="radio-inline"><input type="radio" name="c5" value="0" checked="checked">0</label>
+              <label class="radio-inline"><input type="radio" name="c5" value="1">1</label>
+              <label class="radio-inline"><input type="radio" name="c5" value="2">2</label>
+              <label class="radio-inline"><input type="radio" name="c5" value="3">3</label>
+              <label class="radio-inline"><input type="radio" name="c5" value="4">4</label>
+              <label class="radio-inline"><input type="radio" name="c5" value="5">5</label>
+
+            </form>
+          </p>
+          <div id="chatbox">
+            <div class="container" id="log">
+              <ul id="updates1" class="unstyled">
+              </ul>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <div class="container" id="log">
+        <ul id="updates" class="unstyled">
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

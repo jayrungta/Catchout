@@ -1,0 +1,17 @@
+{
+  "name": "catchout",
+  "description": "Online cardgame",
+  
+  "dependencies": {
+    "express": "^4.13.3",
+    "node-uuid": "~1.4.1",
+    "socket.io": "latest",
+    "nodemailer": "latest"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "client.js",
+  "devDependencies": {},
+  "license": "ISC"
+}
