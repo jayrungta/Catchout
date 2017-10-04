@@ -54,7 +54,7 @@ var ISTTime = new Date(currentTime.getTime() + (ISTOffset + currentOffset)*60000
 var nodemailer = require('nodemailer');
 
 // create reusable transporter object using the default SMTP transport
-var transporter = nodemailer.createTransport('smtps://rungta.jay%40gmail.com:mds4lf12@smtp.gmail.com');
+var transporter = nodemailer.createTransport('smtps://rungta.jay%40gmail.com:PASSWORD@smtp.gmail.com');
 
 
 
